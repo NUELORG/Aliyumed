@@ -124,14 +124,14 @@ export default function Dashboard() {
             <div className={styles.permissionContent}>
               <BellRing size={24} />
               <div>
-                <h4>Enable Alarm Notifications</h4>
-                <p>Get audio alerts when it's time for your medications</p>
+                <h4>Enable Notifications</h4>
+                <p>Allow notifications to get alarms even when you leave this page</p>
               </div>
             </div>
             <div className={styles.permissionActions}>
               <button onClick={handleEnableNotifications} className={styles.enableBtn}>
                 <Volume2 size={16} />
-                Enable Alarms
+                Enable Now
               </button>
               <button onClick={() => setShowPermissionBanner(false)} className={styles.dismissBannerBtn}>
                 Later

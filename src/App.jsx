@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { MedicationProvider } from './context/MedicationContext'
 import { AlarmProvider } from './context/AlarmContext'
 import AlarmModal from './components/AlarmModal'
+import InstallPrompt from './components/InstallPrompt'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -57,6 +58,7 @@ function App() {
           <AlarmProvider>
             <AppRoutes />
             <AlarmModal />
+            <InstallPrompt />
           </AlarmProvider>
         </MedicationProvider>
       </AuthProvider>
