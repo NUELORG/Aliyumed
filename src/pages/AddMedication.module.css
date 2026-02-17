@@ -222,6 +222,66 @@
   line-height: 1.5;
 }
 
+.timePickerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeSelect {
+  padding: 14px 16px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 70px;
+  text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.timeSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.timeColon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-400);
+}
+
+.periodSelect {
+  padding: 14px 16px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 70px;
+  text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.periodSelect:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
 @media (max-width: 480px) {
   .header {
     padding: 16px;

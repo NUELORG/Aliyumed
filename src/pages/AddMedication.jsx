@@ -10,22 +10,43 @@ export default function AddMedication() {
   const { addMedication, updateMedication, getMedication } = useMedications()
   
   const [name, setName] = useState('')
-  const [time, setTime] = useState('12:30')
+  const [hour, setHour] = useState('12')
+  const [minute, setMinute] = useState('00')
+  const [period, setPeriod] = useState('AM')
   const [dosage, setDosage] = useState('')
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
   const isEditing = Boolean(id)
 
+  // Convert 24h time to 12h format
+  const parse24hTime = (time24) => {
+    const [h, m] = time24.split(':').map(Number)
+    const period = h >= 12 ? 'PM' : 'AM'
+    const hour12 = h % 12 || 12
+    return { hour: hour12.toString(), minute: m.toString().padStart(2, '0'), period }
+  }
+
+  // Convert 12h to 24h format for storage
+  const to24hTime = () => {
+    let h = parseInt(hour)
+    if (period === 'PM' && h !== 12) h += 12
+    if (period === 'AM' && h === 12) h = 0
+    return `${h.toString().padStart(2, '0')}:${minute}`
+  }
+
   useEffect(() => {
     if (isEditing) {
       const medication = getMedication(id)
       if (medication) {
         setName(medication.name)
-        setTime(medication.time)
+        const parsed = parse24hTime(medication.time)
+        setHour(parsed.hour)
+        setMinute(parsed.minute)
+        setPeriod(parsed.period)
         setDosage(medication.dosage)
       } else {
-        navigate('/')
+        navigate('/dashboard')
       }
     }
   }, [id, isEditing, getMedication, navigate])
@@ -33,7 +54,6 @@ export default function AddMedication() {
   const validate = () => {
     const newErrors = {}
     if (!name.trim()) newErrors.name = 'Medication name is required'
-    if (!time) newErrors.time = 'Time is required'
     if (!dosage.trim()) newErrors.dosage = 'Dosage is required'
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -48,7 +68,7 @@ export default function AddMedication() {
     
     const medicationData = {
       name: name.trim(),
-      time,
+      time: to24hTime(),
       dosage: dosage.trim()
     }
     
@@ -59,14 +79,14 @@ export default function AddMedication() {
     }
     
     setTimeout(() => {
-      navigate('/')
+      navigate('/dashboard')
     }, 300)
   }
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button onClick={() => navigate('/')} className={styles.backBtn}>
+        <button onClick={() => navigate('/dashboard')} className={styles.backBtn}>
           <ArrowLeft size={20} />
           <span>Back</span>
         </button>
@@ -106,14 +126,36 @@ export default function AddMedication() {
                 <Clock size={16} />
                 Time to Take
               </label>
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className={`${styles.input} ${errors.time ? styles.inputError : ''}`}
-              />
+              <div className={styles.timePickerRow}>
+                <select
+                  value={hour}
+                  onChange={(e) => setHour(e.target.value)}
+                  className={styles.timeSelect}
+                >
+                  {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(h => (
+                    <option key={h} value={h}>{h}</option>
+                  ))}
+                </select>
+                <span className={styles.timeColon}>:</span>
+                <select
+                  value={minute}
+                  onChange={(e) => setMinute(e.target.value)}
+                  className={styles.timeSelect}
+                >
+                  {['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'].map(m => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+                <select
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  className={styles.periodSelect}
+                >
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
               <span className={styles.hint}>What time should you take this medication?</span>
-              {errors.time && <span className={styles.errorText}>{errors.time}</span>}
             </div>
 
             <div className={styles.inputGroup}>
@@ -135,7 +177,7 @@ export default function AddMedication() {
             <div className={styles.actions}>
               <button 
                 type="button" 
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/dashboard')}
                 className={styles.cancelBtn}
               >
                 Cancel
