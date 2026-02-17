@@ -16,7 +16,10 @@ import {
   Calendar,
   ChevronRight,
   BellRing,
-  Volume2
+  Volume2,
+  Download,
+  Share,
+  Smartphone
 } from 'lucide-react'
 import styles from './Dashboard.module.css'
 
@@ -29,6 +32,20 @@ export default function Dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
   const [showPermissionBanner, setShowPermissionBanner] = useState(true)
+  const [showInstallGuide, setShowInstallGuide] = useState(true)
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
+
+  // Check if app is installed as PWA
+  useEffect(() => {
+    const installed = window.matchMedia('(display-mode: standalone)').matches
+    setIsInstalled(installed)
+    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent))
+    
+    // Hide install guide if dismissed before
+    const dismissed = localStorage.getItem('aliyumed_install_guide_dismissed')
+    if (dismissed) setShowInstallGuide(false)
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -137,6 +154,38 @@ export default function Dashboard() {
                 Later
               </button>
             </div>
+          </div>
+        )}
+
+        {!isInstalled && showInstallGuide && (
+          <div className={styles.installGuide}>
+            <div className={styles.installHeader}>
+              <Smartphone size={20} />
+              <h4>Install App for Better Alarms</h4>
+              <button 
+                onClick={() => {
+                  setShowInstallGuide(false)
+                  localStorage.setItem('aliyumed_install_guide_dismissed', 'true')
+                }} 
+                className={styles.closeGuide}
+              >
+                ×
+              </button>
+            </div>
+            {isIOS ? (
+              <div className={styles.installSteps}>
+                <p><span>1</span> Tap <Share size={14} /> <strong>Share</strong> button below</p>
+                <p><span>2</span> Tap <strong>"Add to Home Screen"</strong></p>
+                <p><span>3</span> Tap <strong>"Add"</strong></p>
+                <p className={styles.installNote}>This lets alarms work when Safari is closed!</p>
+              </div>
+            ) : (
+              <div className={styles.installSteps}>
+                <p><span>1</span> Look for <strong>"Install App"</strong> popup</p>
+                <p><span>2</span> Or tap browser menu → <strong>"Add to Home Screen"</strong></p>
+                <p className={styles.installNote}>This lets alarms work when browser is closed!</p>
+              </div>
+            )}
           </div>
         )}
 

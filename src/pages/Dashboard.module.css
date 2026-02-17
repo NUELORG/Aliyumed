@@ -162,6 +162,80 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+.installGuide {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+  color: white;
+}
+
+.installHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.installHeader h4 {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.closeGuide {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.installSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.installSteps p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.installSteps p span {
+  width: 22px;
+  height: 22px;
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.installSteps p svg {
+  flex-shrink: 0;
+}
+
+.installNote {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
 .testAlarmBtn {
   display: flex;
   align-items: center;
