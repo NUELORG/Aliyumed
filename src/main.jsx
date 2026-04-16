@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './index.css?mf-brand=4'
 import App from './App.jsx'
 
 // Register Service Worker for background notifications
@@ -8,9 +8,11 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
+        scope: '/',
+        updateViaCache: 'none',
       })
       console.log('Service Worker registered:', registration.scope)
+      registration.update().catch(() => {})
       
       // Listen for messages from Service Worker
       navigator.serviceWorker.addEventListener('message', (event) => {

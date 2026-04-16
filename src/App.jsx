@@ -3,7 +3,10 @@ import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
+import Insights from './pages/Insights'
+import Settings from './pages/Settings'
 import AddMedication from './pages/AddMedication'
+import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { MedicationProvider } from './context/MedicationContext'
 import { AlarmProvider } from './context/AlarmContext'
@@ -28,24 +31,70 @@ function LandingRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={
-        <LandingRoute><Landing /></LandingRoute>
-      } />
-      <Route path="/login" element={
-        <PublicRoute><Login /></PublicRoute>
-      } />
-      <Route path="/signup" element={
-        <PublicRoute><Signup /></PublicRoute>
-      } />
-      <Route path="/dashboard" element={
-        <PrivateRoute><Dashboard /></PrivateRoute>
-      } />
-      <Route path="/add-medication" element={
-        <PrivateRoute><AddMedication /></PrivateRoute>
-      } />
-      <Route path="/edit-medication/:id" element={
-        <PrivateRoute><AddMedication /></PrivateRoute>
-      } />
+      <Route
+        path="/"
+        element={
+          <LandingRoute>
+            <Landing />
+          </LandingRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/insights"
+        element={
+          <PrivateRoute>
+            <Insights />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <PrivateRoute>
+            <Settings />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/add-medication"
+        element={
+          <PrivateRoute>
+            <AddMedication />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/edit-medication/:id"
+        element={
+          <PrivateRoute>
+            <AddMedication />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   )
 }
@@ -53,15 +102,17 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <MedicationProvider>
-          <AlarmProvider>
-            <AppRoutes />
-            <AlarmModal />
-            <InstallPrompt />
-          </AlarmProvider>
-        </MedicationProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <MedicationProvider>
+            <AlarmProvider>
+              <AppRoutes />
+              <AlarmModal />
+              <InstallPrompt />
+            </AlarmProvider>
+          </MedicationProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   )
 }

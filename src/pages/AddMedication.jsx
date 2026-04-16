@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMedications } from '../context/MedicationContext'
-import { ArrowLeft, Plus, Pill, Clock, Save, Info, Check } from 'lucide-react'
+import { ArrowLeft, Plus, Pill, Clock, Info, Check, StickyNote } from 'lucide-react'
 import styles from './AddMedication.module.css'
 
 export default function AddMedication() {
@@ -14,6 +14,7 @@ export default function AddMedication() {
   const [minute, setMinute] = useState('00')
   const [period, setPeriod] = useState('AM')
   const [dosage, setDosage] = useState('')
+  const [notes, setNotes] = useState('')
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -36,7 +37,8 @@ export default function AddMedication() {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (!isEditing) return
+    queueMicrotask(() => {
       const medication = getMedication(id)
       if (medication) {
         setName(medication.name)
@@ -45,10 +47,11 @@ export default function AddMedication() {
         setMinute(parsed.minute)
         setPeriod(parsed.period)
         setDosage(medication.dosage)
+        setNotes(medication.notes || '')
       } else {
         navigate('/dashboard')
       }
-    }
+    })
   }, [id, isEditing, getMedication, navigate])
 
   const validate = () => {
@@ -69,7 +72,8 @@ export default function AddMedication() {
     const medicationData = {
       name: name.trim(),
       time: to24hTime(),
-      dosage: dosage.trim()
+      dosage: dosage.trim(),
+      notes: notes.trim(),
     }
     
     if (isEditing) {
@@ -86,7 +90,7 @@ export default function AddMedication() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button onClick={() => navigate('/dashboard')} className={styles.backBtn}>
+        <button type="button" onClick={() => navigate('/dashboard')} className={styles.backBtn}>
           <ArrowLeft size={20} />
           <span>Back</span>
         </button>
@@ -172,6 +176,21 @@ export default function AddMedication() {
               />
               <span className={styles.hint}>Enter the dosage amount and unit</span>
               {errors.dosage && <span className={styles.errorText}>{errors.dosage}</span>}
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>
+                <StickyNote size={16} />
+                Notes <span className={styles.optional}>(optional)</span>
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="e.g., Take with food, avoid grapefruit, pharmacy refill date…"
+                className={styles.textarea}
+                rows={3}
+              />
+              <span className={styles.hint}>Private to this device; included in JSON backups.</span>
             </div>
 
             <div className={styles.actions}>

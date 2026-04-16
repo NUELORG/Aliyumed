@@ -5,129 +5,237 @@
   right: 0;
   z-index: 9999;
   padding: 16px;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  background: rgba(12, 6, 24, 0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: mf-install-backdrop 0.4s var(--ease-out) both;
 }
 
 .prompt {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  border-radius: 20px;
-  padding: 24px;
-  color: white;
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-radius: var(--radius-xl);
+  padding: 26px 22px 22px;
   position: relative;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  animation: mf-install-sheet 0.58s var(--ease-out) both;
+  transition: box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast) var(--ease-out),
+    transform var(--t-med) var(--ease-out);
+}
+
+.prompt:hover {
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--primary-glow);
+  border-color: var(--primary-border);
+  transform: translateY(-2px);
+}
+
+[data-theme='dark'] .overlay {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+[data-theme='dark'] .prompt {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-color: var(--border);
 }
 
 .closeBtn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  width: 32px;
-  height: 32px;
+  top: 14px;
+  right: 14px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: color var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out),
+    transform var(--t-fast) var(--ease-spring), border-color var(--t-fast) var(--ease-out);
 }
 
-.icon {
-  width: 64px;
-  height: 64px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
+.closeBtn:hover {
+  color: var(--text);
+  background: var(--primary-soft);
+  border-color: var(--primary-border);
+  transform: scale(1.06);
+}
+
+.heroLogo {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  animation: mf-scale-in 0.55s var(--ease-out) 0.1s both;
 }
 
 .prompt h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 1.28rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  text-align: center;
+  animation: mf-fade-up 0.5s var(--ease-out) 0.14s both;
 }
 
 .prompt > p {
-  font-size: 0.95rem;
-  opacity: 0.9;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  font-size: 0.94rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+  text-align: center;
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
+  animation: mf-fade-up 0.5s var(--ease-out) 0.2s both;
+}
+
+.perkStrip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  margin-bottom: 18px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  animation: mf-fade-in 0.45s var(--ease-out) 0.24s both;
+}
+
+.perkStrip span {
+  opacity: 0.92;
+}
+
+.perkDot {
+  opacity: 0.35;
 }
 
 .installBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   padding: 16px;
-  background: white;
-  color: #4f46e5;
+  background: var(--primary);
+  color: #fff;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: var(--radius);
+  font-size: 1.02rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s;
+  letter-spacing: -0.01em;
+  transition: transform var(--t-fast) var(--ease-spring), box-shadow var(--t-fast) var(--ease-out),
+    filter var(--t-fast) var(--ease-out);
+  animation: mf-fade-up 0.5s var(--ease-out) 0.26s both;
 }
 
 .installBtn:hover {
-  transform: scale(1.02);
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(75, 0, 209, 0.35);
+}
+
+.installBtn:active {
+  transform: translateY(0);
 }
 
 .iosInstructions {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 16px;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-lg);
+  padding: 18px 16px;
+  animation: mf-fade-up 0.5s var(--ease-out) 0.22s both;
 }
 
 .step {
   display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 14px;
+  margin-bottom: 14px;
   font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  animation: mf-fade-up 0.48s var(--ease-out) both;
+}
+
+.step:nth-child(1) {
+  animation-delay: 0.06s;
+}
+.step:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.step:nth-child(3) {
+  animation-delay: 0.18s;
 }
 
 .step:last-of-type {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .step span {
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: var(--bg-elevated);
+  color: var(--primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.8rem;
   flex-shrink: 0;
+  margin-top: 2px;
+  box-shadow: 0 0 0 1px var(--primary-border);
+}
+
+.step strong {
+  color: var(--text);
 }
 
 .gotItBtn {
   width: 100%;
-  padding: 14px;
-  background: white;
-  color: #4f46e5;
+  padding: 15px;
+  background: var(--primary);
+  color: #fff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border-radius: var(--radius);
+  font-size: 0.98rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-spring), filter var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out);
 }
 
+.gotItBtn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(75, 0, 209, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .prompt,
+  .heroLogo,
+  .prompt h3,
+  .prompt > p,
+  .perkStrip,
+  .installBtn,
+  .iosInstructions,
+  .step {
+    animation: none !important;
+  }
+
+  .prompt:hover {
+    transform: none;
+  }
+}

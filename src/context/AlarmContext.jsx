@@ -92,16 +92,16 @@ export function AlarmProvider({ children }) {
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage({
         type: 'SHOW_NOTIFICATION',
-        title: `⏰ Time for ${medication.name}!`,
+        title: `MedForget · ${medication.name}`,
         body: `Dosage: ${medication.dosage}`,
         medication: medication
       })
     } else if ('Notification' in window && Notification.permission === 'granted') {
       // Fallback to regular notification
       try {
-        const notification = new Notification(`⏰ Time for ${medication.name}!`, {
-          body: `Dosage: ${medication.dosage}\nTap to dismiss`,
-          icon: '/pill.svg',
+        const notification = new Notification(`MedForget · ${medication.name}`, {
+          body: `Dosage: ${medication.dosage}. Tap to focus the app.`,
+          icon: '/medforget-brand.png',
           tag: `med-${medication.id}`,
           requireInteraction: true
         })
@@ -258,6 +258,7 @@ export function AlarmProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- paired hook
 export function useAlarm() {
   const context = useContext(AlarmContext)
   if (!context) {

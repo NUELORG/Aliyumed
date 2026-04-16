@@ -35,7 +35,7 @@ export default function AlarmModal() {
           </div>
         </div>
 
-        <h2 className={styles.title}>Time for your medication!</h2>
+        <h2 className={styles.title}>Dose reminder</h2>
         
         <div className={styles.medInfo}>
           <h3 className={styles.medName}>{currentAlarm.name}</h3>
@@ -82,4 +82,7 @@ export default function AlarmModal() {
     </div>
   )
 }
+
+
+
 

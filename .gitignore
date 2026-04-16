@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+.pnpm-store/
+Screenshot*.png
+public/medforget-ui-reference.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

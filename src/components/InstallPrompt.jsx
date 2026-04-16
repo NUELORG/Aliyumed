@@ -1,37 +1,34 @@
 import { useState, useEffect } from 'react'
-import { Download, X, Smartphone } from 'lucide-react'
+import { Download, X } from 'lucide-react'
+import MedForgetLogo from './MedForgetLogo'
+import { KEYS, LEGACY, migrateIfNeeded } from '../lib/storageKeys'
 import styles from './InstallPrompt.module.css'
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showPrompt, setShowPrompt] = useState(false)
-  const [isIOS, setIsIOS] = useState(false)
-  const [isInstalled, setIsInstalled] = useState(false)
+  const [isIOS] = useState(() =>
+    typeof window !== 'undefined' ? /iPad|iPhone|iPod/.test(navigator.userAgent) : false
+  )
+  const [isInstalled, setIsInstalled] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
+  )
 
   useEffect(() => {
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true)
-      return
-    }
+    if (window.matchMedia('(display-mode: standalone)').matches) return
 
-    // Check if iOS
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent)
-    setIsIOS(isIOSDevice)
+    migrateIfNeeded(LEGACY.installDismissed, KEYS.installDismissed)
 
-    // Listen for the beforeinstallprompt event (Android/Desktop)
     const handleBeforeInstall = (e) => {
       e.preventDefault()
       setDeferredPrompt(e)
-      // Show prompt after a delay
       setTimeout(() => setShowPrompt(true), 2000)
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall)
 
-    // For iOS, show instructions after delay
-    if (isIOSDevice) {
-      const dismissed = localStorage.getItem('aliyumed_install_dismissed')
+    if (isIOS) {
+      const dismissed = localStorage.getItem(KEYS.installDismissed)
       if (!dismissed) {
         setTimeout(() => setShowPrompt(true), 3000)
       }
@@ -40,14 +37,14 @@ export default function InstallPrompt() {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall)
     }
-  }, [])
+  }, [isIOS])
 
   const handleInstall = async () => {
     if (!deferredPrompt) return
 
     deferredPrompt.prompt()
     const { outcome } = await deferredPrompt.userChoice
-    
+
     if (outcome === 'accepted') {
       setIsInstalled(true)
     }
@@ -57,7 +54,7 @@ export default function InstallPrompt() {
 
   const handleDismiss = () => {
     setShowPrompt(false)
-    localStorage.setItem('aliyumed_install_dismissed', 'true')
+    localStorage.setItem(KEYS.installDismissed, 'true')
   }
 
   if (isInstalled || !showPrompt) return null
@@ -65,42 +62,53 @@ export default function InstallPrompt() {
   return (
     <div className={styles.overlay}>
       <div className={styles.prompt}>
-        <button onClick={handleDismiss} className={styles.closeBtn}>
+        <button type="button" onClick={handleDismiss} className={styles.closeBtn} aria-label="Dismiss">
           <X size={20} />
         </button>
-        
-        <div className={styles.icon}>
-          <Smartphone size={32} />
+
+        <div className={styles.heroLogo}>
+          <MedForgetLogo variant="mark" size="md" />
         </div>
-        
-        <h3>Install Aliyumed</h3>
+
+        <h3>Install MedForget</h3>
         <p>
-          Install this app on your phone to get <strong>alarm notifications even when you're not using the browser</strong>.
+          Pin the app for <strong>one-tap access</strong> and <strong>stronger background reminders</strong> so
+          doses are harder to miss when life gets loud.
         </p>
+
+        <div className={styles.perkStrip} aria-hidden>
+          <span>Homescreen icon</span>
+          <span className={styles.perkDot}>·</span>
+          <span>Richer alerts</span>
+          <span className={styles.perkDot}>·</span>
+          <span>Feels native</span>
+        </div>
 
         {isIOS ? (
           <div className={styles.iosInstructions}>
             <p className={styles.step}>
-              <span>1.</span> Tap the <strong>Share</strong> button below
+              <span>1</span>
+              Tap <strong>Share</strong> in Safari&apos;s toolbar
             </p>
             <p className={styles.step}>
-              <span>2.</span> Scroll and tap <strong>"Add to Home Screen"</strong>
+              <span>2</span>
+              Scroll and choose <strong>Add to Home Screen</strong>
             </p>
             <p className={styles.step}>
-              <span>3.</span> Tap <strong>"Add"</strong> to install
+              <span>3</span>
+              Tap <strong>Add</strong> to finish
             </p>
-            <button onClick={handleDismiss} className={styles.gotItBtn}>
-              Got it!
+            <button type="button" onClick={handleDismiss} className={styles.gotItBtn}>
+              Got it
             </button>
           </div>
         ) : (
-          <button onClick={handleInstall} className={styles.installBtn}>
-            <Download size={20} />
-            Install App
+          <button type="button" onClick={handleInstall} className={styles.installBtn}>
+            <Download size={20} strokeWidth={2.25} />
+            Install app
           </button>
         )}
       </div>
     </div>
   )
 }
-

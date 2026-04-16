@@ -2,16 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/pill.svg" />
-    <link rel="apple-touch-icon" href="/pill.svg" />
+    <!-- Hard lock brand tokens so embedded / aggressively cached browsers cannot show the old teal theme -->
+    <style id="mf-brand-guard">
+      :root,
+      html[data-theme='light'] {
+        --ink: #1a0d32 !important;
+        --primary: #4b00d1 !important;
+        --primary-hover: #3d00a8 !important;
+        --primary-soft: #f3ebff !important;
+        --primary-light: #ede9fe !important;
+        --primary-border: rgba(75, 0, 209, 0.22) !important;
+        --primary-glow: rgba(75, 0, 209, 0.1) !important;
+        --text: #1a0d32 !important;
+        --text-muted: #675883 !important;
+        --bg-page: #f7f4fc !important;
+        --bg-elevated: #ffffff !important;
+        --bg-muted: #faf8ff !important;
+        --border: #e8e2f2 !important;
+        --shadow-sm: 0 1px 2px rgba(26, 13, 50, 0.05) !important;
+        --shadow: 0 8px 32px rgba(75, 0, 209, 0.08) !important;
+        --shadow-md: 0 16px 48px rgba(75, 0, 209, 0.1) !important;
+        --shadow-lg: 0 24px 64px rgba(75, 0, 209, 0.12) !important;
+      }
+      html[data-theme='dark'] {
+        --primary: #a78bfa !important;
+        --primary-hover: #c4b5fd !important;
+        --primary-soft: rgba(167, 139, 250, 0.16) !important;
+        --primary-light: rgba(167, 139, 250, 0.12) !important;
+        --primary-border: rgba(167, 139, 250, 0.35) !important;
+        --text: #f1f5f9 !important;
+        --text-muted: #a89bc4 !important;
+        --bg-page: #0c0618 !important;
+        --bg-elevated: #150d24 !important;
+        --bg-muted: #10081c !important;
+        --border: #2a1f3d !important;
+      }
+    </style>
+    <link rel="icon" type="image/png" sizes="32x32" href="/medforget-brand.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/medforget-brand.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/medforget-brand.png" />
+    <link rel="shortcut icon" type="image/png" href="/medforget-brand.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/medforget-brand.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Aliyumed - Smart Medication Reminder Application to help you stay on track with your medications" />
-    <meta name="theme-color" content="#6366f1" />
+    <meta name="description" content="MedForget — structured medication reminders, adherence insights, and private on-device scheduling." />
+    <meta name="theme-color" content="#4b00d1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Aliyumed" />
-    <title>Aliyumed - Medication Reminder</title>
+    <meta name="apple-mobile-web-app-title" content="MedForget" />
+    <title>MedForget</title>
   </head>
   <body>
     <div id="root"></div>

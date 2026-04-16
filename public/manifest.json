@@ -1,31 +1,31 @@
 {
-  "name": "Aliyumed - Medication Reminder",
-  "short_name": "Aliyumed",
-  "description": "Smart medication reminder with real-time alarms and notifications",
+  "name": "MedForget",
+  "short_name": "MedForget",
+  "description": "Professional medication reminders, adherence insights, and on-device backups.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f0f1a",
-  "theme_color": "#6366f1",
+  "background_color": "#faf8ff",
+  "theme_color": "#4b00d1",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/pill.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/medforget-brand.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/pill-192.png",
+      "src": "/medforget-brand.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/pill-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/medforget-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ],
   "categories": ["health", "medical", "lifestyle"],
   "prefer_related_applications": false
 }
-

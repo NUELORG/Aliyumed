@@ -7,6 +7,8 @@
 
 .header {
   padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .backBtn {
@@ -31,23 +33,19 @@
 }
 
 .card {
-  background: var(--white);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow);
   margin-bottom: 20px;
-  animation: slideUp 0.3s ease-out;
+  animation: mf-fade-up var(--t-slow) var(--ease-out) both;
+  transition: box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast) var(--ease-out);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-border);
 }
 
 .cardHeader {
@@ -126,6 +124,33 @@
 
 .input::placeholder {
   color: var(--gray-400);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--gray-400);
+  font-size: 0.85rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: all 0.2s;
+  background: var(--bg-muted);
+  color: var(--text);
+  resize: vertical;
+  min-height: 88px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .inputError {

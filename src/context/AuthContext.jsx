@@ -1,81 +1,71 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
+import { KEYS, LEGACY, migrateIfNeeded } from '../lib/storageKeys'
 
 const AuthContext = createContext(null)
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+function readStoredUser() {
+  migrateIfNeeded(LEGACY.user, KEYS.user)
+  try {
+    const stored = localStorage.getItem(KEYS.user)
+    return stored ? JSON.parse(stored) : null
+  } catch {
+    return null
+  }
+}
 
-  useEffect(() => {
-    // Check for stored user on mount
-    const storedUser = localStorage.getItem('aliyumed_user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-    setLoading(false)
-  }, [])
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(readStoredUser)
 
   const login = (email, password) => {
-    // Simple authentication - in a real app, this would call an API
-    const users = JSON.parse(localStorage.getItem('aliyumed_users') || '[]')
-    const foundUser = users.find(u => u.email === email && u.password === password)
-    
-    // Demo credentials
+    migrateIfNeeded(LEGACY.users, KEYS.users)
+    const users = JSON.parse(localStorage.getItem(KEYS.users) || '[]')
+    const foundUser = users.find((u) => u.email === email && u.password === password)
+
     if (email === 'demo@example.com' && password === 'password123') {
       const demoUser = { id: 'demo', name: 'Demo User', email: 'demo@example.com' }
       setUser(demoUser)
-      localStorage.setItem('aliyumed_user', JSON.stringify(demoUser))
+      localStorage.setItem(KEYS.user, JSON.stringify(demoUser))
       return { success: true }
     }
-    
+
     if (foundUser) {
       const userData = { id: foundUser.id, name: foundUser.name, email: foundUser.email }
       setUser(userData)
-      localStorage.setItem('aliyumed_user', JSON.stringify(userData))
+      localStorage.setItem(KEYS.user, JSON.stringify(userData))
       return { success: true }
     }
-    
+
     return { success: false, error: 'Invalid email or password' }
   }
 
   const signup = (name, email, password) => {
-    const users = JSON.parse(localStorage.getItem('aliyumed_users') || '[]')
-    
-    if (users.find(u => u.email === email)) {
+    migrateIfNeeded(LEGACY.users, KEYS.users)
+    const users = JSON.parse(localStorage.getItem(KEYS.users) || '[]')
+
+    if (users.find((u) => u.email === email)) {
       return { success: false, error: 'Email already registered' }
     }
-    
+
     const newUser = {
       id: Date.now().toString(),
       name,
       email,
-      password
+      password,
     }
-    
+
     users.push(newUser)
-    localStorage.setItem('aliyumed_users', JSON.stringify(users))
-    
+    localStorage.setItem(KEYS.users, JSON.stringify(users))
+
     const userData = { id: newUser.id, name: newUser.name, email: newUser.email }
     setUser(userData)
-    localStorage.setItem('aliyumed_user', JSON.stringify(userData))
-    
+    localStorage.setItem(KEYS.user, JSON.stringify(userData))
+
     return { success: true }
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem('aliyumed_user')
-  }
-
-  if (loading) {
-    return <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      fontSize: '1.2rem',
-      color: '#6b7280'
-    }}>Loading...</div>
+    localStorage.removeItem(KEYS.user)
   }
 
   return (
@@ -85,6 +75,7 @@ export function AuthProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- paired hook
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) {
@@ -92,4 +83,3 @@ export function useAuth() {
   }
   return context
 }
-
